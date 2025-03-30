@@ -76,6 +76,16 @@ public class MultiLevelInheritanceDemo {
 }
 
 
+
+
+
+
+
+
+
+
+
+
 // Base class
 class Hello {
     Hello(String message) {
