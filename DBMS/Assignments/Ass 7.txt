@@ -1,109 +1,86 @@
-1.CREATE TABLE Client_Master (
-    Client_no VARCHAR(5) PRIMARY KEY CHECK (Client_no LIKE 'C%'),
-    Name VARCHAR(20) NOT NULL UNIQUE,
-    Address1 VARCHAR(30) NOT NULL,
-    State VARCHAR(30) CHECK (State IN ('Delhi', 'Mumbai', 'Chennai')),
-    City VARCHAR(15)
+-- 1. Create EMP table 
+CREATE TABLE EMP_6061 (
+    E_ID INT PRIMARY KEY,
+    FNAME VARCHAR(50) NOT NULL,
+    LNAME VARCHAR(50) NOT NULL,
+    JOB_ID VARCHAR(50) NOT NULL,
+    SAL INT NOT NULL CHECK (SAL >= 10),
+    DEPT_ID INT NOT NULL,
+    HIRE_DATE DATE NOT NULL
 );
 
-CREATE TABLE Sales_Order (
-    S_order_no VARCHAR(10) PRIMARY KEY CHECK (S_order_no LIKE 'O%'),
-    S_order_date DATE,
-    Client_no VARCHAR(5),
-    Salesman_no VARCHAR(10) CHECK (Salesman_no LIKE 'S%'),
-    Product_no VARCHAR(10),
-    FOREIGN KEY (Client_no) REFERENCES Client_Master(Client_no),
-    FOREIGN KEY (Product_no) REFERENCES Product_Master(Product_no)
-);
+-- Insert Data into EMP_6061 Table
+INSERT INTO EMP_6061 VALUES(198, 'Donald', 'Connell', 'SH_CLERK', 2600, 50, TO_DATE('21-06-1999', 'DD-MM-YYYY'));
+INSERT INTO EMP_6061 VALUES(199, 'Douglas', 'Grant', 'SH_CLERK', 3000, 50, TO_DATE('13-01-1998', 'DD-MM-YYYY'));
+INSERT INTO EMP_6061 VALUES(200, 'Jennifer', 'Whalen', 'AD_ASST', 4400, 10, TO_DATE('17-09-1987', 'DD-MM-YYYY'));
+INSERT INTO EMP_6061 VALUES(201, 'Michael', 'Hartstein', 'IT_PROG', 6000, 20, TO_DATE('19-01-1999', 'DD-MM-YYYY'));
+INSERT INTO EMP_6061 VALUES(202, 'Pat', 'Fay', 'AC_MGR', 6500, 20, TO_DATE('25-10-1989', 'DD-MM-YYYY'));
+INSERT INTO EMP_6061 VALUES(203, 'Susan', 'Mavris', 'AD_VP', 7500, 40, TO_DATE('26-11-1976', 'DD-MM-YYYY'));
+INSERT INTO EMP_6061 VALUES(204, 'Hermann', 'Baer', 'AD_PRES', 9500, 90, TO_DATE('23-08-1995', 'DD-MM-YYYY'));
+INSERT INTO EMP_6061 VALUES(205, 'Shelley', 'Higgins', 'AC_MGR', 2300, 60, TO_DATE('24-02-1998', 'DD-MM-YYYY'));
+INSERT INTO EMP_6061 VALUES(206, 'William', 'Gitz', 'IT_PROG', 5000, 60, TO_DATE('12-03-2001', 'DD-MM-YYYY'));
+INSERT INTO EMP_6061 VALUES(100, 'Steven', 'King', 'AD_ASST', 8956, 100, TO_DATE('15-06-2002', 'DD-MM-YYYY'));
+INSERT INTO EMP_6061 VALUES(101, 'Neena', 'Kochar', 'SH_CLERK', 3400, 30, TO_DATE('10-07-2003', 'DD-MM-YYYY'));
 
-CREATE TABLE Product_Master (
-    Product_no VARCHAR(10) PRIMARY KEY CHECK (Product_no LIKE 'P%'),
-    Description VARCHAR(20) NOT NULL UNIQUE,
-    Qty_on_hand NUMBER(8,2) CHECK (Qty_on_hand > 10),
-    Sell_price NUMBER(8,2) NOT NULL,
-    Cost_price NUMBER(8,2) NOT NULL
-);
+-- 2. Display first names in ascending order with alias 'Employee Name'
+SELECT FNAME AS "Employee Name" FROM EMP_6061 ORDER BY FNAME ASC;
 
-INSERT INTO Client_Master (Client_no, Name, Address1, State, City) VALUES
-('C01', 'Ivaan', 'Church Rd', 'Maharashtra', 'Mumbai'),
-('C02', 'Vandana', 'St.Mary Rd', 'Tamil Nadu', 'Chennai'),
-('C03', 'Rahul', 'Mall Rd', 'Maharashtra', 'Mumbai'),
-('C04', 'Basu', 'Church Rd', 'Maharashtra', 'Mumbai'),
-('C05', 'Ravi', 'Chandini', NULL, 'Delhi'),
-('C06', 'Rukmini', 'Mall Rd', 'Maharashtra', 'Mumbai');
+-- 3. Display first names in descending order with alias 'Employee Name'
+SELECT FNAME AS "Employee Name" FROM EMP_6061 ORDER BY FNAME DESC;
 
-INSERT INTO Sales_Order (S_order_no, S_order_date, Client_no, Salesman_no, Product_no) VALUES
-('O19001', '1996-01-12', 'C01', 'S01', 'P01'),
-('O19002', '1996-01-25', 'C02', 'S02', 'P02'),
-('O19003', '1996-02-18', 'C03', 'S03', 'P03'),
-('O19004', '1996-04-03', 'C01', 'S01', 'P04'),
-('O19005', '1996-05-20', 'C04', 'S02', 'P05'),
-('O19006', '1996-05-24', 'C05', 'S04', 'P06');
+-- 4. Display hire dates in ascending order
+SELECT HIRE_DATE FROM EMP_6061 ORDER BY HIRE_DATE ASC;
 
-INSERT INTO Product_Master (Product_no, Description, Qty_on_hand, Sell_price, Cost_price) VALUES
-('P01', '1.44 Floppies', 100, 525, 500),
-('P02', 'Monitors', 25, 12000, 11280),
-('P03', 'Mouse', 20, 1050, 1000),
-('P04', '1.22 Floppies', 100, 525, 500),
-('P05', 'Keyboards', 15, 3150, 3050),
-('P06', 'Cd drive', 14, 5250, 5100);
+-- 5. Display employee details where fname starts with J or M, sorted by LNAME
+SELECT * FROM EMP_6061 WHERE FNAME LIKE 'J%' OR FNAME LIKE 'M%' ORDER BY LNAME ASC;
 
-2.ALTER TABLE Client_Master MODIFY Address1 VARCHAR(30) NOT NULL;
+-- 6. Find max, min, avg, sum of salary
+SELECT MAX(SAL) AS "Max", MIN(SAL) AS "Min", AVG(SAL) AS "Avg", SUM(SAL) AS "Sum" FROM EMP_6061;
 
-3.SELECT * FROM Client_Master;
-SELECT * FROM Sales_Order;
-SELECT * FROM Product_Master;
+-- 7. Find max, min, avg, sum of salary for each job type
+SELECT JOB_ID, MAX(SAL) AS "Max", MIN(SAL) AS "Min", AVG(SAL) AS "Avg", SUM(SAL) AS "Sum" FROM EMP_6061 GROUP BY JOB_ID;
 
-4.SELECT * FROM Sales_Order WHERE Client_no NOT IN (SELECT Client_no FROM Client_Master);
-SELECT * FROM Sales_Order WHERE Product_no NOT IN (SELECT Product_no FROM Product_Master);
+-- 8. Display the number of people under each job
+SELECT JOB_ID, COUNT(*) AS "Employee Count" FROM EMP_6061 GROUP BY JOB_ID;
 
-5.SELECT * FROM Product_Master WHERE Qty_on_hand <= 10;
+-- 9. Display the number of managers (assuming managers have '_MGR' or 'VP' in JOB_ID)
+SELECT COUNT(*) AS "Total Managers" FROM EMP_6061 WHERE JOB_ID LIKE '%_MGR%' OR JOB_ID LIKE '%VP%';
 
-6.SELECT Product_no, Description, (Sell_price - Cost_price) AS Profit FROM Product_Master;
+-- 10. Find the difference between highest and lowest salaries
+SELECT MAX(SAL) - MIN(SAL) AS "Salary Difference" FROM EMP_6061;
 
-7.SELECT SUM(Qty_on_hand * Cost_price) AS Total_Stock_Cost FROM Product_Master;
+-- 11. Display max and avg salary of engineers (assuming 'IT_PROG' as engineer role)
+SELECT MAX(SAL) AS "Max Salary", AVG(SAL) AS "Avg Salary" FROM EMP_6061 WHERE JOB_ID = 'IT_PROG';
 
-8.-13.SELECT * FROM Client_Master WHERE Name LIKE 'I%'; 
-SELECT * FROM Client_Master WHERE Name LIKE 'R%i'; 
-SELECT * FROM Client_Master WHERE SUBSTRING(Name, 3, 1) = 'a'; 
-SELECT * FROM Client_Master WHERE Name LIKE '%aa%'; 
-SELECT * FROM Client_Master WHERE LENGTH(Name) = 4; 
-SELECT * FROM Client_Master WHERE State IS NULL; 
+-- 12. Display first and last fname in alphabetical order
+SELECT MIN(FNAME) AS "First Employee", MAX(FNAME) AS "Last Employee" FROM EMP_6061;
 
-14.SELECT * FROM Sales_Order WHERE S_order_date > '1996-01-31';
+-- 13. Display first and last hire dates
+SELECT MIN(HIRE_DATE) AS "First Hire_Date", MAX(HIRE_DATE) AS "Last Hire_Date" FROM EMP_6061;
 
-15.UPDATE Sales_Order 
-SET S_order_date = '1996-07-24', Product_no = 'P06', Salesman_no = 'S04'
-WHERE Client_no = 'C01';
+-- 14. Display max and avg salary of clerks (assuming JOB_ID contains 'CLERK')
+SELECT MAX(SAL) AS "Max Salary", AVG(SAL) AS "Avg Salary" FROM EMP_6061 WHERE JOB_ID LIKE '%CLERK%';
 
-16.UPDATE Client_Master 
-SET City = 'Kolkata' 
-WHERE Client_no = 'C05';
+-- 15. Display dept no. and min salary for each dept
+SELECT DEPT_ID, MIN(SAL) AS "Min Salary" FROM EMP_6061 GROUP BY DEPT_ID;
 
-17.ALTER TABLE Client_Master MODIFY Client_no VARCHAR(15);
-ALTER TABLE Sales_Order MODIFY Client_no VARCHAR(15);
+-- 16. Display dept no. and min salary, excluding min salaries <= 3000, sorted desc
+SELECT DEPT_ID, MIN(SAL) AS "Min Salary" FROM EMP_6061 GROUP BY DEPT_ID HAVING MIN(SAL) > 3000 ORDER BY "Min Salary" DESC;
 
-18.UPDATE Sales_Order SET Client_no = 'C08' WHERE S_order_no = 'O19001';
+-- 17. Display sentence for all employees
+SELECT FNAME || ' whose designation is ' || JOB_ID || ' gets ' || SAL || ' but wants to earn ' || (SAL * 3) AS "Salary Statement"
+FROM EMP_6061;
 
-19.20.ALTER TABLE Sales_Order DROP CONSTRAINT sales_order_product_fk; 
-ALTER TABLE Sales_Order DROP CONSTRAINT sales_order_client_fk;
+-- 18. Display all employee details in the given format
+SELECT E_ID || ', ' || FNAME || ', ' || LNAME || ', ' || TO_CHAR(HIRE_DATE, 'DD-MM-YYYY') || ', ' || JOB_ID || ', ' || SAL || ', ' || DEPT_ID AS "Employee Details"
+FROM EMP_6061;
 
-21.ALTER TABLE Product_Master DROP CONSTRAINT product_no_check;
+-- 19. Drop domain constraint (check constraint on SAL)
+SELECT CONSTRAINT_NAME 
+FROM USER_CONSTRAINTS 
+WHERE TABLE_NAME = 'EMP_6061' AND CONSTRAINT_TYPE = 'C';
+ALTER TABLE EMP_6061 DROP CONSTRAINT <SYS_C004165>;
 
-22.DELETE FROM Client_Master WHERE Client_no = 'C02';
 
-23.DELETE FROM Product_Master WHERE Sell_price BETWEEN 1000 AND 10000;
-
-24.CREATE TABLE Orders (
-    OrderID INT,
-    ProductID INT,
-    Quantity INT,
-    PRIMARY KEY (OrderID, ProductID)
-);
-
-25.CREATE TABLE OrderDetails (
-    OrderID INT,
-    ProductID INT,
-    ShipmentDate DATE,
-    FOREIGN KEY (OrderID, ProductID) REFERENCES Orders(OrderID, ProductID)
-);
+-- 20. Drop primary key
+ALTER TABLE EMP_6061 DROP PRIMARY KEY;
