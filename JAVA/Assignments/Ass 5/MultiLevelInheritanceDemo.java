@@ -74,3 +74,44 @@ public class MultiLevelInheritanceDemo {
         sc.close();
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+// Base class
+class Hello {
+    Hello(String message) {
+        System.out.println(message);
+    }
+}
+
+// Derived class 1
+class World extends Hello {
+    World(String message) {
+        super(message); // Calling the Hello class constructor
+        System.out.println("World");
+    }
+}
+
+// Derived class 2
+class Universe extends World {
+    Universe(String message) {
+        super(message); // Calling the World class constructor
+        System.out.println("Universe");
+    }
+}
+
+public class MultiLevelInheritance {
+    public static void main(String[] args) {
+        // Creating an object of Universe class
+        Universe universe = new Universe("Hello");
+    }
+}
