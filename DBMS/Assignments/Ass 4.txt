@@ -8,7 +8,7 @@ CREATE TABLE EMP_YourClassRoll (
 );
 
 -- 2. Change data type of Basic from INT to FLOAT
-ALTER TABLE EMP_YourClassRoll MODIFY Basic FLOAT(10,2);
+ALTER TABLE EMP_YourClassRoll MODIFY Basic FLOAT(10);
 
 -- 3. Increase field size of Name column by 5
 ALTER TABLE EMP_YourClassRoll MODIFY Name VARCHAR2(30);
@@ -35,15 +35,27 @@ INSERT INTO EMP_YourClassRoll VALUES (6, 'Bimal', 7000, 'Trainee', 25);
 INSERT INTO EMP_trainee (Emp_id, Name, Basic, Designation, Age)
 SELECT ID, Name, Basic, Designation, Age FROM EMP_YourClassRoll WHERE Designation = 'Trainee';
 
+INSERT INTO EMP_trainee 
+SELECT * FROM EMP_YourClassRoll WHERE Designation = 'Trainee';
+
 -- 8. Display table structure
 DESC EMP_YourClassRoll;
 DESC EMP_trainee;
 
 -- 9. Add columns Skills and DOJ
 ALTER TABLE EMP_YourClassRoll ADD (Skills VARCHAR2(10), DOJ DATE);
+    UPDATE EMP_YourClassRoll SET Skills = 'IT' WHERE ID = 1;
+    UPDATE EMP_YourClassRoll SET Skills = 'HR' WHERE ID = 2;
+    UPDATE EMP_YourClassRoll SET Skills = 'Pornstar', DOJ = '04-17-2005' WHERE ID = 3;
+    UPDATE EMP_YourClassRoll SET Skills = 'Gay' , DOJ = '04-17-2005' WHERE ID = 4;
+
+select * from EMP_YourClassRoll;
 
 -- 10. Change designation of all trainees in EMP_trainee
 UPDATE EMP_trainee SET Designation = 'Programmer_Trainee' WHERE Designation = 'Trainee';
+
+select * from EMP_trainee ;
+
 
 -- 11. Display ID and Name of Engineers
 SELECT ID, Name FROM EMP_YourClassRoll WHERE Designation = 'Engineer';
@@ -54,6 +66,7 @@ SET Basic = Basic + 500
 WHERE Designation IN ('Engineer', 'Manager');
 
 -- 13. Change ID data type to VARCHAR2 and increase size to 5
+ALTER TABLE EMP_YourClassRoll MODIFY ID number(3);
 ALTER TABLE EMP_YourClassRoll MODIFY ID VARCHAR2(5);
 
 -- 14. Display both tables
@@ -84,14 +97,21 @@ SELECT * FROM EMP_YourClassRoll WHERE Designation = 'Trainee';
 
 DELETE FROM EMP_YourClassRoll WHERE Designation = 'Trainee';
 
+select * from EMP_YourClassRoll;
+
 -- 22. Recover deleted data
-INSERT INTO EMP_YourClassRoll SELECT * FROM EMP_Deleted_Trainees;
+INSERT INTO EMP_YourClassRoll SELECT * FROM EMP_Deleted_Trainees;   -----------
 
 -- 23. Drop Age column from EMP_trainee
-ALTER TABLE EMP_trainee DROP COLUMN Age;
+ALTER TABLE EMP_trainee DROP (Age);
+
+ALTER TABLE EMP_trainee ADD (Age number(3));
+
+select * from EMP_trainee ;
+
 
 -- 24. Drop two columns in one query
-ALTER TABLE EMP_trainee DROP (Basic, Skills);
+ALTER TABLE EMP_YourClassRoll DROP (Basic, Skills);
 
 -- 25. Rename EMP_YourClassRoll to EMP_Mgr_Engr
 ALTER TABLE EMP_YourClassRoll RENAME TO EMP_Mgr_Engr;
@@ -101,6 +121,8 @@ DROP TABLE EMP_trainee;
 
 -- 27. Truncate EMP_Mgr_Engr table
 TRUNCATE TABLE EMP_Mgr_Engr;
+
+rollback;
 
 -- 28. Recover truncated data (if possible, but TRUNCATE can't be undone)
 INSERT INTO EMP_Mgr_Engr SELECT * FROM EMP_Deleted_Trainees;
