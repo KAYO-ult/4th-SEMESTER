@@ -19,6 +19,7 @@ public class Clock {
 
     public void showTime() {
         System.out.printf("Time: %02d:%02d:%02d %s\n", hours, minutes, seconds, isAM ? "AM" : "PM");
+        System.out.println("Time: " + hours + ":" + minutes + ":" + seconds + " " + (isAM ? "AM" : "PM"));
     }
 
     public static void main(String[] args) {
