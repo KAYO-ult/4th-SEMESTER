@@ -1,32 +1,18 @@
 import java.util.Scanner;
 
-public class WordOccurrence {
-    public static int countOccurrences(String sentence, String word) {
-        String[] words = sentence.split("\\s+"); // Splitting sentence into words
-        int count = 0;
-
-        for (String w : words) {
-            if (w.equalsIgnoreCase(word)) { // Case-insensitive comparison
-                count++;
-            }
-        }
-        return count;
-    }
-
+public class WordCount {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Sentence: ");
+        String sentence = sc.nextLine();
+        System.out.print("Word: ");
+        String word = sc.next();
 
-        // User input
-        System.out.print("Enter a sentence: ");
-        String sentence = scanner.nextLine();
+        int count = 0;
+        for (String w : sentence.split(" ")) {
+            if (w.equalsIgnoreCase(word)) count++;
+        }
 
-        System.out.print("Enter the word to find: ");
-        String word = scanner.next();
-
-        int occurrences = countOccurrences(sentence, word);
-
-        System.out.println("The word '" + word + "' appears " + occurrences + " time(s) in the sentence.");
-        
-        scanner.close();
+        System.out.println("'" + word + "' appears " + count + " time(s).");
     }
 }
