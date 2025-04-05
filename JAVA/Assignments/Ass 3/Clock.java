@@ -1,70 +1,43 @@
-import java.util.*;
+import java.util.Scanner;
 
 public class Clock {
-    private int hours;
-    private int minutes;
-    private int seconds;
-    private boolean isAM; // true for AM, false for PM
+    private int hours, minutes, seconds;
+    private boolean isAM;
 
-    // Constructor
-    public Clock(int hours, int minutes, int seconds) {
-        if (isValidTime(hours, minutes, seconds)) {
-            this.hours = hours;
-            this.minutes = minutes;
-            this.seconds = seconds;
-            this.isAM = hours < 12; // Default mode determination
-        } else {
-            throw new IllegalArgumentException("Invalid time values.");
-        }
+    public Clock(int h, int m, int s) {
+        hours = h;
+        minutes = m;
+        seconds = s;
+        setAMPM();
     }
 
-    // Method to validate time values
-    private boolean isValidTime(int hours, int minutes, int seconds) {
-        return (hours >= 0 && hours < 24) && (minutes >= 0 && minutes < 60) && (seconds >= 0 && seconds < 60);
+    private void setAMPM() {
+        isAM = hours < 12;
+        if (hours == 0) hours = 12;
+        else if (hours > 12) hours -= 12;
     }
 
-    // Method to set AM/PM mode
-    public void setToAMPMMode() {
-        if (hours == 0) {
-            hours = 12;
-            isAM = true;
-        } else if (hours == 12) {
-            isAM = false;
-        } else if (hours > 12) {
-            hours -= 12;
-            isAM = false;
-        } else {
-            isAM = true;
-        }
+    public void showTime() {
+        System.out.printf("Time: %02d:%02d:%02d %s\n", hours, minutes, seconds, isAM ? "AM" : "PM");
     }
 
-    // Method to display time
-    public void displayTime() {
-        String amPm = isAM ? "AM" : "PM";
-        System.out.printf("Time: %02d:%02d:%02d %s\n", hours, minutes, seconds, amPm);
-    }
-
-    // Main method to get user input and test
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        
-        try {
-            System.out.print("Enter hours (0-23): ");
-            int hours = scanner.nextInt();
-            
-            System.out.print("Enter minutes (0-59): ");
-            int minutes = scanner.nextInt();
-            
-            System.out.print("Enter seconds (0-59): ");
-            int seconds = scanner.nextInt();
-            
-            Clock clock = new Clock(hours, minutes, seconds);
-            clock.setToAMPMMode();
-            clock.displayTime();
-        } catch (Exception e) {
-            System.out.println("Invalid input. Please enter numeric values in the correct range.");
-        } finally {
-            scanner.close();
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Hours (0-23): ");
+        int h = sc.nextInt();
+        System.out.print("Minutes (0-59): ");
+        int m = sc.nextInt();
+        System.out.print("Seconds (0-59): ");
+        int s = sc.nextInt();
+
+        if (h >= 0 && h < 24 && m >= 0 && m < 60 && s >= 0 && s < 60) {
+            Clock c = new Clock(h, m, s);
+            c.showTime();
+        } else {
+            System.out.println("Invalid time entered.");
         }
+
+        sc.close();
     }
 }
