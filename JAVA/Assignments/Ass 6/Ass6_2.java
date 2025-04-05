@@ -1,4 +1,4 @@
-public class Ass5_2 {
+public class Ass6_2 {
     public static void main(String[] args) {
         MyRunnable task = new MyRunnable();
 

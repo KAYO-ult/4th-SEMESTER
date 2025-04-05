@@ -1,4 +1,4 @@
-public class Ass5_1 {
+public class Ass6_1 {
     public static void main(String[] args) {
         System.out.println("Main thread is running");
 

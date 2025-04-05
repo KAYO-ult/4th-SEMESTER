@@ -1,4 +1,4 @@
-~public class Ass6_3 {
+public class Ass6_3 {
     public static void main(String[] args) {
         MyThread thread1 = new MyThread();
         MyThread thread2 = new MyThread();
